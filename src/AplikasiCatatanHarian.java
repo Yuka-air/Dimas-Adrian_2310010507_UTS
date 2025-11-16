@@ -150,12 +150,27 @@ public class AplikasiCatatanHarian extends javax.swing.JFrame {
         try {
             File file = fc.getSelectedFile();
 
-            String filePath = file.getAbsolutePath();
-            if (!filePath.toLowerCase().endsWith(".txt")) {
-                filePath += ".txt";
+            // CEK RADIO BUTTON — jika true maka export JSON
+            if (jRadioButton1.isSelected()) {
+
+                // Pastikan extension .json
+                String path = file.getAbsolutePath();
+                if (!path.toLowerCase().endsWith(".json")) {
+                    file = new File(path + ".json");
+                }
+
+                manager.exportToJson(file);
+                JOptionPane.showMessageDialog(this, "Export JSON berhasil!");
+                return;
             }
 
-            File finalFile = new File(filePath);
+            // ===============================
+            // ========== EXPORT TXT =========
+            // ===============================
+            String filePath = file.getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(".txt")) {
+                file = new File(filePath + ".txt");
+            }
 
             int index = jList2.getSelectedIndex();
             if (index < 0) {
@@ -165,16 +180,14 @@ public class AplikasiCatatanHarian extends javax.swing.JFrame {
 
             Catatan c = manager.getModel().get(index);
 
-            PrintWriter writer = new PrintWriter(finalFile, "UTF-8");
-
+            PrintWriter writer = new PrintWriter(file, "UTF-8");
             writer.println(c.getJudul());
             writer.println();
             writer.println(c.getIsi());
             writer.println("---------------");
-
             writer.close();
 
-            JOptionPane.showMessageDialog(this, "Export berhasil!");
+            JOptionPane.showMessageDialog(this, "Export TXT berhasil!");
 
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Gagal export: " + e.getMessage());
@@ -231,6 +244,7 @@ public class AplikasiCatatanHarian extends javax.swing.JFrame {
         btnClear = new javax.swing.JButton();
         btnImport = new javax.swing.JButton();
         btnEksport = new javax.swing.JButton();
+        jRadioButton1 = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -389,6 +403,13 @@ public class AplikasiCatatanHarian extends javax.swing.JFrame {
             }
         });
 
+        jRadioButton1.setText("Eksport to Json");
+        jRadioButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jRadioButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -404,7 +425,9 @@ public class AplikasiCatatanHarian extends javax.swing.JFrame {
                         .addGap(33, 33, 33)
                         .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnEksport, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnEksport, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(jRadioButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(89, 89, 89)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -424,7 +447,8 @@ public class AplikasiCatatanHarian extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnImport, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnEksport, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnEksport, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jRadioButton1))
                         .addGap(21, 21, 21)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(28, 28, 28)
@@ -465,6 +489,10 @@ public class AplikasiCatatanHarian extends javax.swing.JFrame {
     private void btnKeluarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnKeluarActionPerformed
         keluarAplikasi();
     }//GEN-LAST:event_btnKeluarActionPerformed
+
+    private void jRadioButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton1ActionPerformed
+        
+    }//GEN-LAST:event_jRadioButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -517,6 +545,7 @@ public class AplikasiCatatanHarian extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTextArea jTextArea2;
